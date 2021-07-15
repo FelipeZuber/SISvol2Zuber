@@ -90,11 +90,11 @@ class scene2 extends Phaser.Scene{
 
         //CombustibleCombustibleCombustibleCombustibleCombustibleCombustibleCombustibleCombustible
         // Cuadrante 1
-        var repeatComb = Phaser.Math.Between(1,2);
+        var repeatComb = Phaser.Math.Between(0,1);
         scoreC = repeatComb * 15;// hacer la suma de todos los ScoreC (ScoreCV2) y cambiar ScoreC por otra var en Update ;)
-        var posFinX = 3334 / (repeatComb +1) ;
-        var px = Phaser.Math.Between(200, posFinX);
-        var stpX2 = Phaser.Math.Between(200, posFinX);
+        var posFinX = 3334 / (repeatComb +1) ;//Ecuacion para que los items no esten afuera del mapa
+        var px = Phaser.Math.Between(200, posFinX);// posicion del primer item
+        var stpX2 = Phaser.Math.Between(200, posFinX);// distancia entre los diferentes items
         var stpY2 = Phaser.Math.Between(20, 40);
         stars = this.physics.add.group({
             key: 'Combustible',
@@ -106,7 +106,7 @@ class scene2 extends Phaser.Scene{
         });
 
         // Cuadrante 2
-        var repeatCombV2 = Phaser.Math.Between(1,2);
+        var repeatCombV2 = Phaser.Math.Between(0,1);
         scoreCV2 = repeatCombV2 * 15;
         var posFinXV2 = 3334/ (repeatCombV2+1);
         var pxV2 = Phaser.Math.Between(3334, (posFinXV2 + 3000));
@@ -122,7 +122,7 @@ class scene2 extends Phaser.Scene{
         });
 
         // Cuadrante 3
-        var repeatCombV3 = Phaser.Math.Between(1,2);
+        var repeatCombV3 = Phaser.Math.Between(0,1);
         scoreCV3 = repeatCombV3 * 15;
         var posFinXV3 = 3334/ (repeatCombV3 + 1);
         var pxV3 = Phaser.Math.Between(200, posFinXV3);
@@ -138,7 +138,7 @@ class scene2 extends Phaser.Scene{
         });
 
         // Cuadrante 4
-        var repeatCombV4 = Phaser.Math.Between(1,2);
+        var repeatCombV4 = Phaser.Math.Between(0,1);
         scoreCV4 = repeatCombV4 * 15;
         var posFinXV4 = 3334/ (repeatCombV4 + 1);
         var pxV4 = Phaser.Math.Between(3334, (posFinXV4 + 3000));
@@ -155,9 +155,9 @@ class scene2 extends Phaser.Scene{
 
         //PiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezas
         // Cuadrante 1
-        var repeatComb2 = Phaser.Math.Between(1,2);
+        var repeatComb2 = Phaser.Math.Between(0,1);
         scoreP = repeatComb2;
-        var posFinX2 = 3334 / (repeatComb2 +1) ;
+        var posFinX2 = 3334 / (repeatComb2 +1);
         var px = Phaser.Math.Between(200, posFinX2);
         var stpX3 = Phaser.Math.Between(250, posFinX2);
         var stpY3 = Phaser.Math.Between(20, 30);
@@ -171,7 +171,7 @@ class scene2 extends Phaser.Scene{
         });
 
         //Cuadrante 2
-        var repeatComb2V2 = Phaser.Math.Between(1,2);
+        var repeatComb2V2 = Phaser.Math.Between(0,1);
         scorePV2 = repeatComb2V2;
         var posFinX2V2 = 3334 / (repeatComb2V2 +1) ;
         var pxPV2 = Phaser.Math.Between(3334, (posFinX2V2 + 3000));
@@ -187,7 +187,7 @@ class scene2 extends Phaser.Scene{
         });
 
         //Cuadrante 3
-        var repeatComb2V3 = Phaser.Math.Between(1,2);
+        var repeatComb2V3 = Phaser.Math.Between(0,1);
         scorePV3 = repeatComb2V3;
         var posFinX2V3 = 3334 / (repeatComb2V3 +1) ;
         var pxPV3 = Phaser.Math.Between(200, posFinX2V3) ;
@@ -203,7 +203,7 @@ class scene2 extends Phaser.Scene{
         });
 
         //Cuadrante 4
-        var repeatComb2V4 = Phaser.Math.Between(1,2);
+        var repeatComb2V4 = Phaser.Math.Between(0,1);
         scorePV4 = repeatComb2V4;
         var posFinX2V4 = 3334 / (repeatComb2V4 + 1) ;
         var pxPV4 = Phaser.Math.Between(3334, (posFinX2V4 + 3000));
@@ -247,7 +247,8 @@ class scene2 extends Phaser.Scene{
         //Pinchos
         //pinchos = this.physics.add.staticGroup();
         //pinchos.create(400, 400, "Pinchos");
-        
+        //bomb
+        bombs = this.physics.add.group({repeat:0, setXY: {stepX: 20}});
 
         FondInter1 = this.add.image(-20, -340,"FondInterface1");
         FondInter1.scrollFactorX = 0
@@ -270,10 +271,11 @@ class scene2 extends Phaser.Scene{
         scoreText3 = this.add.text(1230, -420, 'Oro: 0', { font: '80px monospace', fill: '#de7e0d'});
         //Tiempo para que se termine el Juego
         this.initialTime = 100;
-        
+        this.BombTime = 2000;
         textoxg = this.add.text(1700, -420, 'Oxigeno: %' + this.initialTime, { font: '80px monospace', fill: '#de7e0d'});
         timpoOxg = this.time.addEvent({ delay: 400, callback: this.PerdidaOxig, callbackScope: this, loop: true });
-        
+        //tiempo de spawn bombs
+        BombTime = this.time.addEvent({ delay: 10, callback: this.timeBomb, callbackScope: this, loop: true });
         vadiasIcon = this.add.image(1850, -270, "HeartIcon").setScale(0.4);
         vadiasIcon.scrollFactorX = 0
         vadiasIcon.scrollFactorY = 0
@@ -350,6 +352,8 @@ class scene2 extends Phaser.Scene{
         this.physics.add.overlap(player, Oxig, this.PlsOxig, null, this);
         var pinchcollider = this.physics.add.collider(player, pinchos, this.pinchosF, null, this);
 
+        this.physics.add.collider(player, bombs, this.hitBomb, null, this);
+        
         var restartButton2 = this.add.image(2200, -260,"MuteIcon1").setScale(0.25)
         .setInteractive()
         .on("pointerdown",() => this.desmutear());
@@ -464,11 +468,16 @@ class scene2 extends Phaser.Scene{
         if (this.initialTime == 0){
             this.SinOxigeno.play();
             this.MúsicaLVL.stop();
-            this.scene.start("scene3")
+            this.scene.start("scene3");
         }
-        //SinVidas
-        
-       
+        //Meteoritos
+        if ((this.BombTime == 1700) ||(this.BombTime == 1500) ||(this.BombTime == 1300) ||(this.BombTime == 1100) ||(this.BombTime == 900) || (this.BombTime == 700) || (this.BombTime == 300) || (this.BombTime == 100) || (this.BombTime == 500)){ 
+            var posx = (player.x < 3334) ? Phaser.Math.Between(3334, 4000) : Phaser.Math.Between(1000, 3334);
+            var bomb = bombs.create(posx, -90, 'Meteorito');
+            bomb.setCollideWorldBounds(false);
+            bomb.setVelocity(Phaser.Math.Between(-400, 400), 200);
+            bomb.allowGravity = false;
+        }
 
     }
 
@@ -554,6 +563,9 @@ class scene2 extends Phaser.Scene{
         this.initialTime -= 1;
         textoxg.setText('Oxigeno: %' + this.initialTime);
     }
+    timeBomb (){
+        this.BombTime -= 1;
+    }
     AnimDead(){
         //player2 = this.physics.add.sprite(player.x, player.y, 'MuerteAnim');
         player.anims.stop("turn", false)
@@ -574,5 +586,10 @@ class scene2 extends Phaser.Scene{
     desmutear(){
         mute = false;
         this.MúsicaLVL.play();
+    }
+    hitBomb(player,bomb){
+        bomb.disableBody(false,true)
+        this.vidas -= 1;
+        this.DañoPinchosSound.play();
     }
 }    

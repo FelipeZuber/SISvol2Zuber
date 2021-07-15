@@ -24,6 +24,7 @@ var player;
 var tiempoLogo;
 var scale;
 var initialTime2;
+var BombTime;
 var stars;
 var starsV2;
 var starsV3;
@@ -83,6 +84,7 @@ var pinchcollider;
 var visits;
 var oro;
 var Niv2Unl;
+var bombs;
 
 
 

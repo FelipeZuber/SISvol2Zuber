@@ -23,7 +23,7 @@ class Nivel2 extends Phaser.Scene{
         this.vidas= 2;
         this.inmunedmgtime = 2;
         //Bordes del Mapa
-        var Bordermap= this.add.rectangle(3500, 3620, 7000, 30);
+        var Bordermap= this.add.rectangle(3500, 4200, 7000, 30);
         this.physics.add.staticGroup(Bordermap);
         var Bordermap2= this.add.rectangle(10, 1000, 30, 7000);
         this.physics.add.staticGroup(Bordermap2);
@@ -80,7 +80,7 @@ class Nivel2 extends Phaser.Scene{
 
         //CombustibleCombustibleCombustibleCombustibleCombustibleCombustibleCombustibleCombustible
         // Cuadrante 1
-        var repeatComb = Phaser.Math.Between(1,2);
+        var repeatComb = Phaser.Math.Between(0,1);
         scoreC = repeatComb * 15;// hacer la suma de todos los ScoreC (ScoreCV2) y cambiar ScoreC por otra var en Update ;)
         var posFinX = 3334 / (repeatComb +1) ;
         var px = Phaser.Math.Between(200, posFinX);
@@ -96,7 +96,7 @@ class Nivel2 extends Phaser.Scene{
         });
 
         // Cuadrante 2
-        var repeatCombV2 = Phaser.Math.Between(1,2);
+        var repeatCombV2 = Phaser.Math.Between(0,1);
         scoreCV2 = repeatCombV2 * 15;
         var posFinXV2 = 3334/ (repeatCombV2+1);
         var pxV2 = Phaser.Math.Between(3334, (posFinXV2 + 3000));
@@ -141,7 +141,7 @@ class Nivel2 extends Phaser.Scene{
 
         //PiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezasPiezas
         // Cuadrante 1
-        var repeatComb2 = Phaser.Math.Between(1,2);
+        var repeatComb2 = Phaser.Math.Between(0,1);
         scoreP = repeatComb2;
         var posFinX2 = 3334 / (repeatComb2 +1) ;
         var px = Phaser.Math.Between(200, posFinX2);
@@ -157,7 +157,7 @@ class Nivel2 extends Phaser.Scene{
         });
 
         //Cuadrante 2
-        var repeatComb2V2 = Phaser.Math.Between(1,2);
+        var repeatComb2V2 = Phaser.Math.Between(0,1);
         scorePV2 = repeatComb2V2;
         var posFinX2V2 = 3334 / (repeatComb2V2 +1) ;
         var pxPV2 = Phaser.Math.Between(3334, (posFinX2V2 + 3000));
@@ -226,6 +226,7 @@ class Nivel2 extends Phaser.Scene{
             child4.setBounceY(Phaser.Math.FloatBetween(0.4, 0.5));
         });
 
+
         //Pinchos
         pinchos = this.physics.add.staticGroup();
         pinchos.create(100, 900, "Pinchos");
@@ -254,7 +255,29 @@ class Nivel2 extends Phaser.Scene{
         pinchos.create(2900, 2150, "Pinchos");
         pinchos.create(3300, 2150, "Pinchos");
         pinchos.create(3700, 2150, "Pinchos");
+        //Pincho fondos
+        pinchos.create(100, 4180, "Pinchos");
+        pinchos.create(500, 4180, "Pinchos");
+        pinchos.create(900, 4180, "Pinchos");
+        pinchos.create(1300, 4180, "Pinchos");
+        pinchos.create(1700, 4180, "Pinchos");
+        pinchos.create(2100, 4180, "Pinchos");
+        pinchos.create(2500, 4180, "Pinchos");
+        pinchos.create(2900, 4180, "Pinchos");
+        pinchos.create(3300, 4180, "Pinchos");
+        pinchos.create(3700, 4180, "Pinchos");
+        pinchos.create(4100, 4180, "Pinchos");
+        pinchos.create(4500, 4180, "Pinchos");
+        pinchos.create(4900, 4180, "Pinchos");
+        pinchos.create(5300, 4180, "Pinchos");
+        pinchos.create(5700, 4180, "Pinchos");
+        pinchos.create(6100, 4180, "Pinchos");
+        pinchos.create(6500, 4180, "Pinchos");
+        pinchos.create(6900, 4180, "Pinchos");
         
+        //
+        
+        bombs = this.physics.add.group({repeat:0, setXY: {stepX: 20}});
 
         FondInter1 = this.add.image(-20, -340,"FondInterface1");
         FondInter1.scrollFactorX = 0
@@ -280,10 +303,13 @@ class Nivel2 extends Phaser.Scene{
         //
         //Tiempo para que se termine el Juego
         this.initialTime = 100;
-        
+        this.BombTime = 2000;
         textoxg = this.add.text(1700, -420, 'Oxigeno: %' + this.initialTime, { font: '80px monospace', fill: '#de7e0d'});
         timpoOxg = this.time.addEvent({ delay: 450, callback: this.PerdidaOxig, callbackScope: this, loop: true });
         
+        //tiempo de spawn bombs
+        BombTime = this.time.addEvent({ delay: 10, callback: this.timeBomb, callbackScope: this, loop: true });
+
         vadiasIcon = this.add.image(1850, -270, "HeartIcon").setScale(0.4);
         vadiasIcon.scrollFactorX = 0
         vadiasIcon.scrollFactorY = 0
@@ -361,6 +387,8 @@ class Nivel2 extends Phaser.Scene{
         this.physics.add.overlap(player, stars3, this.collectStar3, null, this);
         this.physics.add.overlap(player, Oxig, this.PlsOxig, null, this);
         var pinchcollider = this.physics.add.collider(player, pinchos, this.pinchosF, null, this);
+        //meteorito
+        this.physics.add.collider(player, bombs, this.hitBomb, null, this);
 
         var restartButton2 = this.add.image(2200, -260,"MuteIcon1").setScale(0.25)
         .setInteractive()
@@ -379,7 +407,6 @@ class Nivel2 extends Phaser.Scene{
     }
     update()
     {
-        
         if (gameOver)
         {
             return;
@@ -461,8 +488,15 @@ class Nivel2 extends Phaser.Scene{
             this.MúsicaLVL2.stop();
             this.scene.start("scene3")
         }
-        //SinVidas
         
+        //Meteoritos
+        if ((this.BombTime == 1700) ||(this.BombTime == 1500) ||(this.BombTime == 1300) ||(this.BombTime == 1100) ||(this.BombTime == 900) || (this.BombTime == 700) || (this.BombTime == 300) || (this.BombTime == 100) || (this.BombTime == 500)){ 
+            var posx = (player.x < 3334) ? Phaser.Math.Between(3334, 4000) : Phaser.Math.Between(1000, 3334);
+            var bomb = bombs.create(posx, -90, 'Meteorito');
+            bomb.setCollideWorldBounds(false);
+            bomb.setVelocity(Phaser.Math.Between(-400, 400), 200);
+            bomb.allowGravity = false;
+        }
        
 
     }
@@ -558,8 +592,16 @@ class Nivel2 extends Phaser.Scene{
 
         player.anims.play("left", false)
         setTimeout(() => {
-            this.scene.start("scene3")  
+            this.scene.start("scene3") 
         }, 10000);
+    }
+    timeBomb (){
+        this.BombTime -= 1;
+    }
+    hitBomb(player,bomb){
+        bomb.disableBody(false,true)
+        this.vidas -= 1;
+        this.DañoPinchosSound.play();
     }    
     mutear(){
         mute = true;
@@ -569,5 +611,5 @@ class Nivel2 extends Phaser.Scene{
         mute = false;
         this.MúsicaLVL2.play();
     }
-    
+
 }

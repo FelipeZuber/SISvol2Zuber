@@ -65,6 +65,7 @@ class scene1 extends Phaser.Scene{
         this.load.image('Estructura 8', './assets/Estructura 8.png');
         this.load.image('ButtonsD', './assets/ButtonsD.png');
         this.load.image('Oro', './assets/Estructura 9.png');
+        this.load.image('Meteorito', './assets/meteorito.png');
         this.load.image('PlatMov', './assets/PlatMov.png');
         this.load.image('PlatMov2', './assets/PlatMov2.png');
         this.load.image('sky', './assets/Sky 16-9.png');
